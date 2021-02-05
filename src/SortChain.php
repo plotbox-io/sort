@@ -4,7 +4,7 @@ namespace Tuck\Sort;
 
 class SortChain
 {
-    private $callables = [];
+    private $callables;
 
     public function __construct(array $callables)
     {
@@ -59,14 +59,14 @@ class SortChain
 
     private function singleToComparison(callable $callable)
     {
-        return function ($a, $b) use ($callable) {
-            return $callable($a) <=> $callable($b);
+        return static function ($a, $b) use ($callable) {
+            return Util::spaceshipOperator($callable($a), $callable($b));
         };
     }
 
     public function reverse(callable $callable)
     {
-        return function ($a, $b) use ($callable) {
+        return static function ($a, $b) use ($callable) {
             return $callable($a, $b) * (-1);
         };
     }
